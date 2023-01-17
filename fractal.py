@@ -2,6 +2,9 @@ from manimlib import *
 
 
 class PythagoreanTree(Scene):
+    """
+    勾股树
+    """
     def __init__(self, **kwargs):
         super(PythagoreanTree, self).__init__(**kwargs)
         # 深度
