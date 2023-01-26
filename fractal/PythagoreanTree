@@ -1,4 +1,8 @@
-from manimlib import *
+"""
+manim community v0.17.2
+"""
+
+from manim import *
 
 
 class PythagoreanTree(Scene):
@@ -34,10 +38,10 @@ class PythagoreanTree(Scene):
         lbranch.scale(0.8, about_point=block_points[3])
         rbranch.scale(0.6, about_point=block_points[0])
         # 平移
-        lbranch.shift(0.8 * (block_points[3] - block_points[5]))
-        rbranch.shift(0.6 * (block_points[11] - block_points[9]))
+        lbranch.shift(0.8 * (block_points[4] - block_points[7]))
+        rbranch.shift(0.6 * (block_points[15] - block_points[12]))
         # 旋转
-        lbranch.rotate(angle=self.alpha, about_point=block_points[3])
+        lbranch.rotate(angle=self.alpha, about_point=block_points[4])
         rbranch.rotate(angle=-self.beta, about_point=block_points[0])
 
         self.blocks_anim[level + 1].extend((ReplacementTransform(block.copy(), lbranch),
