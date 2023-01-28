@@ -1,5 +1,7 @@
 """
 manim community v0.17.2
+
+python 3.10.9
 """
 
 from manim import *
@@ -38,6 +40,7 @@ class PythagoreanTree(Scene):
         lbranch.scale(0.8, about_point=block_points[3])
         rbranch.scale(0.6, about_point=block_points[0])
         # 平移
+        # 注意:manimCE和manimGL的所用的锚点数不一样,在manimGL里渲染时注意更改block_points的下标
         lbranch.shift(0.8 * (block_points[4] - block_points[7]))
         rbranch.shift(0.6 * (block_points[15] - block_points[12]))
         # 旋转
