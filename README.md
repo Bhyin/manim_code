@@ -3,7 +3,7 @@
 
 ---
 
-`manim`是**3Blue1Brown**等人开发的**开源项目**。manim利用python编写，让人可以通过编程方式制作高逼格的数学动画。
+`manim`是**3Blue1Brown**开发的数学动画引擎，是github上的**开源项目**。manim利用python编写，让人可以通过编程方式制作高逼格的数学动画。
 
 - 3B1B的github页面：<https://github.com/3b1b>
 - 3B1B的B站主页：<https://space.bilibili.com/88461692>
