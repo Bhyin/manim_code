@@ -1,12 +1,12 @@
+# -*- encoding: utf-8 -*-
 """
 谢尔宾斯基三角
 
-有两个类
+PyCharm SierpinskiTriangle
+2023/02/02
 
-manim community edition v0.17.2
+manimCE v0.17.2
 python 3.10.9
-
-2023/2/2
 """
 from manim import *
 
