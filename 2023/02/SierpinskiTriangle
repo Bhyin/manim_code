@@ -1,0 +1,100 @@
+"""
+谢尔宾斯基三角
+
+有两个类
+
+manim community edition v0.17.2
+python 3.10.9
+
+2023/2/2
+"""
+from manim import *
+
+config.renderer = RendererType.OPENGL
+
+
+def get_vertex(points):
+    """
+    获取manim中三角形的三个顶点
+    """
+    # OpenGL渲染时, 三角形每条边有3个锚点, Cairo渲染时,每条边有4个锚点
+    handles_num = 3 if config.renderer == RendererType.OPENGL else 4
+    return points[0], points[handles_num - 1], points[2 * handles_num - 1]
+
+
+class SierpinskiTriangle_01(Scene):
+    """
+    谢尔宾斯基三角
+    """
+
+    def __init__(self):
+        super(SierpinskiTriangle_01, self).__init__()
+        # 这个类采用递归构造分形图案, 这个变量用于控制递归层数, 建议不超过7
+        self.depth = 6
+
+        self.anims = [[] for _ in range(self.depth + 1)]
+
+        T = Triangle(fill_color=WHITE, fill_opacity=1).scale_to_fit_height(6)
+        T.set_stroke(width=0)
+        t = T.copy().scale(0.5).set_fill(BLACK, 1).rotate(PI).align_to(T, direction=DOWN)
+
+        self.base = VGroup(T, t)
+
+        self.anims[0].append(GrowFromPoint(self.base, point=ORIGIN))
+
+    def build(self, T: VGroup, depth=3):
+        if depth == 0:
+            return
+
+        t1, t2, t3 = T.copy(), T.copy(), T.copy()
+
+        # 获取三角形T[0]的三个顶点
+        T_vertexes = get_vertex(T[0].get_all_points())
+
+        t1.scale(0.5, about_point=T_vertexes[0])
+        t2.scale(0.5, about_point=T_vertexes[1])
+        t3.scale(0.5, about_point=T_vertexes[2])
+
+        self.anims[self.depth + 1 - depth].extend([
+            ReplacementTransform(T.copy(), t1),
+            ReplacementTransform(T.copy(), t2),
+            ReplacementTransform(T.copy(), t3)
+        ])
+
+        self.build(t1, depth - 1)
+        self.build(t2, depth - 1)
+        self.build(t3, depth - 1)
+
+    def construct(self):
+        self.build(self.base, depth=self.depth)
+
+        for anim in self.anims:
+            self.play(*anim, run_time=3)
+
+
+class SierpinskiTriangle_02(Scene):
+    """
+    另一种构造方法
+    """
+
+    def construct(self):
+        # 这个类采用迭代来构造分形, 这是迭代轮数
+        epoch = 6
+        # 如果这个迭代论述和上面一个类的递归深度相同的话, 两个类做出来的图案就是一样的
+        # 这个类代码虽然简洁,但速度没比上面快多少, 至少在我的电脑上是这样
+
+        T = Triangle(fill_color=WHITE, fill_opacity=1, stroke_width=0).scale_to_fit_height(6)
+        t = T.copy().scale(0.5).set_fill(BLACK, 1).rotate(PI).align_to(T, direction=DOWN)
+
+        T_vertexes = get_vertex(T.get_all_points())
+        LD = T_vertexes[1] - T_vertexes[0]
+        RD = T_vertexes[2] - T_vertexes[0]
+
+        self.play(GrowFromPoint(VGroup(T, t), point=ORIGIN))
+
+        for _ in range(epoch):
+            Triangles = VGroup(*self.mobjects)
+            self.play(Triangles.animate.scale(0.5, about_point=T_vertexes[0]), run_time=2)
+
+            t1, t2 = Triangles.copy(), Triangles.copy()
+            self.play(t1.animate.shift(0.5 * LD), t2.animate.shift(0.5 * RD), run_time=2)
